@@ -7,3 +7,4 @@ ffmpeg
 cmake-build-debug
 .DS_Store
 .idea
+sdlms/3rdparty/wzlibcpp.zip
