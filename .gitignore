@@ -4,3 +4,6 @@ data
 font
 ffmpeg
 .vs
+cmake-build-debug
+.DS_Store
+.idea

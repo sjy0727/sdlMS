@@ -3,6 +3,7 @@
 资源文件进QQ群760717877下载
 
 快速拉取本项目
+
 ```
 git clone --recurse-submodules https://github.com/PShocker/sdlMS.git --depth 1
 ```
@@ -22,3 +23,15 @@ git clone --recurse-submodules https://github.com/PShocker/sdlMS.git --depth 1
 **[Mac编译](doc/Mac.md)**
 
 编译前需要保证FFMPEG目录正确
+
+# Todo:
+
+- 预编译头文件
+- 摄像机任务居中
+- 人物ID名片
+- 攀爬左右翻转
+- 攻击动画瞬发
+- 不同武器手持动作不同
+- 林中之城藤蔓图层不对
+- UI
+- 切换地图的音乐没跟上

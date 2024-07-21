@@ -1,0 +1,17 @@
+[requires]
+freetype/2.13.2
+sdl/2.30.4
+ffmpeg/6.1.1
+
+[generators]
+CMakeDeps
+CMakeToolchain
+
+[options]
+freetype/*:fPIC=True
+freetype/*:Shared=False
+ffmpeg/*:fPIC=True
+ffmpeg/*:Shared=False
+ffmpeg/*:with_asm=False
+ffmpeg/*:with_freetype=False
+ffmpeg/*:with_libx265=False
