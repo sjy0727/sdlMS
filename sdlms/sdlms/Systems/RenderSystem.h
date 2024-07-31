@@ -8,6 +8,8 @@
 #include "Components/Transform.h"
 #include "Components/Video.h"
 #include "Entities/FootHold.h"
+#include "Entities/LadderRope.h"
+#include "Entities/Mob.h"
 #include "Entities/Npc.h"
 #include "Systems/System.h"
 
@@ -22,5 +24,10 @@ private:
     void render_hvtile_sprite(Transform* tr, HVTile* hvt, World& world);
     void render_avatar_sprite(Transform* tr, Avatar* ava, World& world);
     void render_video(Transform* tr, Video* vid, World& world);
+
+    // debug
     void render_fh(FootHold* fh, World& world);
+    void render_lr(LadderRope* lr, World& world);
+    void render_mob(Mob* mob, World& world);
+
 };

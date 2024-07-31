@@ -43,9 +43,9 @@ Portal::Portal(wz::Node *node, World *world)
                     pt = 2;
                 }
                 auto url = u"MapHelper.img/portal/game/" + std::basic_string<char16_t>(pt_list[pt]);
-                if (world->get_resource<Wz>().Map->get_root()->find_from_path(url) != NULL)
+                if (world->get_resource<Wz>().Map->get_root()->find_from_path(url) != nullptr)
                 {
-                    if (world->get_resource<Wz>().Map->get_root()->find_from_path(url + u"/default") != NULL)
+                    if (world->get_resource<Wz>().Map->get_root()->find_from_path(url + u"/default") != nullptr)
                     {
                         auto disspr = new DistanceSprite();
                         add_component(disspr);

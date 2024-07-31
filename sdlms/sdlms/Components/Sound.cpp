@@ -142,7 +142,7 @@ Sound::Sound(wz::Node* node)
                             inFormat,
                             inSampleRate,
                             0,
-                            NULL);
+                            nullptr);
 
         // 初始化SwrContext
         if (swr_init(swrContext) < 0)

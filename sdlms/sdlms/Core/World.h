@@ -1,20 +1,19 @@
 #pragma once
 
 #include "Components/Component.h"
+#include "Core/Window.h"
 #include "Entities/Entity.h"
 #include "Resource/Resource.h"
 #include "Systems/System.h"
 
-#include <map>
-#include <unordered_map>
-
 #include <cstdint>
+#include <map>
 #include <typeindex>
 #include <typeinfo>
-
-#include "Core/Window.h"
-#include <SDL2/SDL.h>
+#include <unordered_map>
 #include <vector>
+
+#include <SDL2/SDL.h>
 
 // 重载 SDL_Point 的加法运算符
 SDL_FPoint operator+(const SDL_FPoint& m, const SDL_FPoint& n);

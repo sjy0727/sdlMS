@@ -15,7 +15,7 @@ NameTag::NameTag(int width, int height)
         pixel[i] = color;
     }
     auto texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, height);
-    SDL_UpdateTexture(texture, NULL, pixel.data(), width * sizeof(Uint32));
+    SDL_UpdateTexture(texture, nullptr, pixel.data(), width * sizeof(Uint32));
     SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 
     Sprite *spr = new Sprite(texture, width, height);

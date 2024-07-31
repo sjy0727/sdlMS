@@ -12,14 +12,19 @@ void Window::create_window(const char*  title,
                            unsigned int pixel_scale_h,
                            unsigned int pixel_scale_v)
 {
-    int result = SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO);
+    const int result = SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO);
     [[unlikely]] if (result < 0)
     {
         ECS_PRINT_ERROR("Failed to initialize SDL (%s)", SDL_GetError());
         std::abort();
     }
 
-    window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow(title,
+                              SDL_WINDOWPOS_UNDEFINED,
+                              SDL_WINDOWPOS_UNDEFINED,
+                              static_cast<int>(width),
+                              static_cast<int>(height),
+                              SDL_WINDOW_SHOWN);
 
     [[unlikely]] if (!window)
     {
@@ -29,7 +34,7 @@ void Window::create_window(const char*  title,
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    SDL_RenderSetLogicalSize(renderer, width, height);
+    SDL_RenderSetLogicalSize(renderer, static_cast<int>(width), static_cast<int>(height));
 
     window_title = title;
 }

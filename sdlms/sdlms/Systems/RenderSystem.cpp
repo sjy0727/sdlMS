@@ -4,6 +4,7 @@
 #include "Components/Camera.h"
 #include "Core/ECSSystem.h"
 #include "Core/World.h"
+#include "Extension/CustomSDLExt.h"
 
 void RenderSystem::run(World& world)
 {
@@ -33,10 +34,22 @@ void RenderSystem::run(World& world)
             }
         }
     }
-    // for (auto &[key, val] : world.get_entitys<FootHold>())
-    // {
-    // 	render_fh(val, world);
-    // }
+
+    // Debug Mode: 画出所有的foothold
+    for (auto& [key, val] : world.get_entitys<FootHold>())
+    {
+        render_fh(val, world);
+    }
+    // Debug Mode: 画出所有的ladder rope
+    for (auto& [key, val] : world.get_entitys<LadderRope>())
+    {
+        render_lr(val, world);
+    }
+    // Debug Mode: 画出所有的mob
+    for (auto& [key, val] : world.get_entitys<Mob>())
+    {
+        render_mob(val, world);
+    }
 }
 
 void RenderSystem::render_sprite(Transform* tr, Sprite* spr, World& world)
@@ -87,7 +100,7 @@ void RenderSystem::render_sprite(Transform* tr, Sprite* spr, World& world)
                           &pos_rect,
                           rot,
                           &origin,
-                          (SDL_RendererFlip)tr->get_flip());
+                          static_cast<SDL_RendererFlip>(tr->get_flip()));
     }
 }
 
@@ -428,7 +441,7 @@ void RenderSystem::render_video(Transform* tr, Video* vid, World& world)
     auto y = tr->get_position().y;
 
     SDL_FRect rect = {x - camera->get_x(), y - camera->get_y(), width, heihgt};
-    SDL_RenderCopyF(Window::get_renderer(), vid->texture, NULL, &rect);
+    SDL_RenderCopyF(Window::get_renderer(), vid->texture, nullptr, &rect);
 }
 
 void RenderSystem::render_fh(FootHold* fh, World& world)
@@ -436,9 +449,52 @@ void RenderSystem::render_fh(FootHold* fh, World& world)
     auto rl     = fh->get_component<Line>();
     auto camera = world.get_components<Camera>().find(0)->second;
 
-    SDL_RenderDrawLine(Window::get_renderer(),
-                       rl->get_m().x - camera->get_x(),
-                       rl->get_m().y - camera->get_y(),
-                       rl->get_n().x - camera->get_x(),
-					   rl->get_n().y - camera->get_y());
+    // SDL_SetRenderDrawColor(Window::get_renderer(), 0, 255, 0, 255); // 设置绿色
+
+    // SDL_RenderDrawLine(Window::get_renderer(),
+    //                    rl->get_m().x - camera->get_x(),
+    //                    rl->get_m().y - camera->get_y(),
+    //                    rl->get_n().x - camera->get_x(),
+    // 	   rl->get_n().y - camera->get_y());
+
+    SDL_RenderDrawThickLine(Window::get_renderer(),
+                            rl->get_m().x - camera->get_x(),
+                            rl->get_m().y - camera->get_y(),
+                            rl->get_n().x - camera->get_x(),
+                            rl->get_n().y - camera->get_y(),
+                            3);
+}
+
+void RenderSystem::render_lr(LadderRope* lr, World& world)
+{
+    auto rl     = lr->get_component<Line>();
+    auto camera = world.get_components<Camera>().find(0)->second;
+
+    SDL_RenderDrawThickLine(Window::get_renderer(),
+                            rl->get_m().x - camera->get_x(),
+                            rl->get_m().y - camera->get_y(),
+                            rl->get_n().x - camera->get_x(),
+                            rl->get_n().y - camera->get_y(),
+                            3);
+}
+
+void RenderSystem::render_mob(Mob* mob, World& world)
+{
+    auto aspr   = mob->get_component<AnimatedSprite>();
+    auto tr     = mob->get_component<Transform>();
+    auto camera = world.get_components<Camera>().find(0)->second;
+
+    auto cur_spr        = aspr->get_current_sprite();
+    auto cur_spr_origin = cur_spr->get_origin();
+    auto cur_spr_w      = cur_spr->get_width();
+    auto cur_spr_h      = cur_spr->get_height();
+
+    SDL_Rect rect = {int(tr->get_position().x) - camera->get_x() - cur_spr_origin.x,
+                     int(tr->get_position().y) - camera->get_y() - cur_spr_origin.y,
+                     cur_spr_w,
+                     cur_spr_h};
+
+    SDL_SetRenderDrawBlendMode(Window::get_renderer(), SDL_BLENDMODE_BLEND); // 设置透明色
+    SDL_SetRenderDrawColor(Window::get_renderer(), 255, 0, 0, 100); // 设置红色
+    SDL_RenderFillRect(Window::get_renderer(), &rect); // 填充矩形
 }

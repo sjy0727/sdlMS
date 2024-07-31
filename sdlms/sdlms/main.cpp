@@ -21,17 +21,16 @@
 #include <cstdio>
 
 #ifdef __EMSCRIPTEN__
-#include <emscripten.h>
+#    include <emscripten.h>
 #endif
 
-int width = 800;
-int height = 600;
+int width  = 1280;
+int height = 720;
 
 void main_loop()
 {
-    World *world = World::get_world();
-    [[unlikely]]
-    if (world->is_game_quit())
+    World* world = World::get_world();
+    [[unlikely]] if (world->is_game_quit())
     {
 #ifdef __EMSCRIPTEN__
         emscripten_cancel_main_loop(); /* this should "kill" the app. */
@@ -39,27 +38,33 @@ void main_loop()
         exit(0);
 #endif
     }
-    world->poll_events();
-    world->tick_delta_time();
+    world->poll_events();     // 事件处理
+    world->tick_delta_time(); // 计算帧间隔
 
-    Window::clear();
-    world->process_systems();
-    Window::update();
+    Window::clear();          // 清屏
+    world->process_systems(); // 遍历system更新
+    Window::update();         // 渲染器更新窗口
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     World world;
 #ifdef __ANDROID__
-    Wz *wz = new Wz("/sdcard/Data/"); // wz文件路径
-    FreeType::init("/sdcard/Data/"); // 字体文件路径
+    Wz* wz = new Wz("/sdcard/Data/"); // wz文件路径
+    FreeType::init("/sdcard/Data/");  // 字体文件路径
 #else
-    Wz *wz = new Wz("./Data/"); // wz文件路径
-    FreeType::init("./Data/"); // 字体文件路径
+    Wz* wz = new Wz("./Data/"); // wz文件路径
+    FreeType::init("./Data/");  // 字体文件路径
 #endif
     world.add_resource(wz);
 
     Window::create_window("sdlMS", width, height); // 创建窗口
+    // SDL_CreateWindow("debug",
+    //                  SDL_WINDOWPOS_UNDEFINED,
+    //                  SDL_WINDOWPOS_UNDEFINED,
+    //                  200,
+    //                  200,
+    //                  SDL_WINDOW_SHOWN);
 
     // 添加system到std::vector<System *> system_list
     world.add_system(new SoundSystem());
@@ -78,15 +83,17 @@ int main(int argc, char *argv[])
 
     world.add_system(new RenderSystem());
 
-    Camera *camera = new Camera(0, 0, width, height);
-    Player *pla = new Player(); // 玩家控制的角色
+    auto* camera = new Camera(0, 0, static_cast<float>(width), static_cast<float>(height));
+
+    auto* pla = new Player(); // 玩家控制的角色
+
     {
-        Character *cha = new Character(&world, {0, 0});
-        Normal *nor = new Normal();
+        auto* cha = new Character(&world, {0, 0});
+        auto* nor = new Normal();
 
         cha->add_component(camera); // 角色添加相机
-        cha->add_component(nor); // 角色添加普通物理
-        cha->add_component(pla); // 角色添加玩家控制
+        cha->add_component(nor);    // 角色添加普通物理
+        cha->add_component(pla);    // 角色添加玩家控制
 
         world.add_component(camera, 0);
         world.add_component(nor);

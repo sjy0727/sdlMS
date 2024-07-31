@@ -24,7 +24,7 @@ void VideoSystem::update_video(Video *video)
             avcodec_send_packet(video->codecContext, &packet);
             if (avcodec_receive_frame(video->codecContext, frame) == 0)
             {
-                SDL_UpdateYUVTexture(video->texture, NULL,
+                SDL_UpdateYUVTexture(video->texture, nullptr,
                                      frame->data[0], frame->linesize[0],
                                      frame->data[1], frame->linesize[1],
                                      frame->data[2], frame->linesize[2]);

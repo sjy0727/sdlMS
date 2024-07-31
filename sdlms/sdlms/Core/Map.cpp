@@ -183,13 +183,12 @@ void Map::load_bgm(wz::Node* node, World* world)
     node = node->find_from_path("info/bgm");
     if (node != nullptr)
     {
-        auto url = dynamic_cast<wz::Property<wz::wzstring>*>(node)->get();
-        url.insert(url.find('/'), u".img");
+        auto url = dynamic_cast<wz::Property<wz::wzstring>*>(node)->get(); // Bgm00/FloralLife
+        url.insert(url.find('/'), u".img"); // Bgm00.img/FloralLife
         node     = world->get_resource<Wz>().Sound->get_root()->find_from_path(url);
         auto sou = Sound::load(node);
         world->add_unique_component(sou);
     }
-    return;
 }
 
 void Map::clean_up(World* world)
